@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ceramics Website - Gallery</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        .show-more-btn {
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+    <h1>Gallery</h1>
+    <div class="image-container">
+        {% for file_id, file_name in file_details %}
+        <div class="image-item">
+            <a href="https://drive.google.com/uc?export=view&id={{ file_id }}">
+                <img src="https://drive.google.com/uc?export=view&id={{ file_id }}">
+            </a>
+            <br>
+            <!-- <span>{{ file_name }}</span> -->
+            <form method="POST" action="{{ url_for('ceramic_restoration') }}">
+                <input type="hidden" name="file_id" value="{{ file_id }}">
+                <input type="hidden" name="file_name" value="{{ file_name }}">
+                <button type="submit" class="button">Choose Image</button>
+            </form>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="show-more-btn">
+        <button id="show-more-btn" class="button">Show More</button>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            var start_index = {{ file_details|list|length }};
+            $('#show-more-btn').on('click', function() {
+                $.ajax({
+                    url: '/load-more',
+                    data: {
+                        start_index: start_index
+                    },
+                    success: function(response) {
+                        var file_details = response.file_details;
+                        if (file_details.length > 0) {
+                            file_details.forEach(function(file) {
+                                var file_id = file[0];
+                                var file_name = file[1];
+                                var imageItem = '<div class="image-item">' +
+                                                '<a href="https://drive.google.com/uc?export=view&id=' + file_id + '">' +
+                                                '<img src="https://drive.google.com/uc?export=view&id=' + file_id + '">' +
+                                                '</a>' +
+                                                '<br>' +
+                                                // '<span>' + file_name + '</span>' +
+                                                '<form method="POST" action="{{ url_for("ceramic_restoration") }}">' +
+                                                '<input type="hidden" name="file_id" value="' + file_id + '">' +
+                                                '<input type="hidden" name="file_name" value="' + file_name + '">' +
+                                                '<button type="submit" class="button">Choose Image</button>' +
+                                                '</form>' +
+                                                '</div>';
+                                $('.image-container').append(imageItem);
+                            });
+                            start_index += file_details.length;
+                        } else {
+                            $('#show-more-btn').hide();
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+    <a href="{{ url_for('home') }}" class="button">Back to Home</a>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Ceramics Website</title>
+   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+   <div class="image-section">
+      <header>
+         <!-- Update the header section with your desired layout -->
+         <h1>Ceramics Website</h1>
+      </header>
+
+      <nav>
+         <ul class="nav-list">
+            <li><a href="{{ url_for('home') }}" class="button">Home</a></li>
+            <li><a href="{{ url_for('gallery') }}" class="button">Gallery</a></li>
+            <li><a href="{{ url_for('ceramic_restoration') }}" class="button">Ceramic Restoration</a></li>
+         </ul>
+      </nav>
+
+   </div>
+
+   <div class="content">
+
+      <!-- Update the content section with your desired layout -->
+      <h2>Welcome to my Ceramics Website!</h2>
+      <p>Explore the beautiful world of ceramics and discover amazing artwork.</p>
+
+      <h2>About Us</h2>
+      <div class="image-index">
+         <img  src="{{ url_for('static', filename='images/ceramics.jpg') }}" alt="Ceramics Image" class="slide-in">
+      </div>
+<!-- 
+      <p class="fade-in">Welcome to Ceramics Website, your premier destination for high-quality ceramics. We specialize in crafting exquisite ceramic pieces that combine artistry and functionality.</p>
+
+      <p class="fade-in">With a team of skilled artisans, we take pride in creating unique and personalized ceramic designs. Each piece is meticulously handcrafted, ensuring attention to detail and exceptional craftsmanship.</p>
+
+      <p class="fade-in">At Ceramics Website, we believe in the beauty and versatility of ceramics. Our passion for this art form drives us to deliver stunning creations that enhance your living spaces, whether it's through elegant vases, functional tableware, or decorative sculptures.</p>
+
+      <p class="fade-in">Whether you're looking for a one-of-a-kind gift, a statement piece for your home, or custom-made ceramics for a special occasion, we have you covered. Our commitment to quality and customer satisfaction is unparalleled.</p>
+
+      <p class="fade-in">Explore our gallery to discover the beauty and charm of our ceramic creations. We also offer ceramic workshops where you can learn the art of pottery and unleash your creativity.</p>
+
+      <p class="fade-in">Thank you for choosing Ceramics Website. We look forward to bringing the beauty of ceramics into your life.</p> -->
+
+      <a href="{{ url_for('contact') }}" class="button">Contact Us</a>
+   </div>
+
+   <footer>
+      <!-- Update the footer section with your desired layout -->
+      <p>&copy; 2023 Ceramics Website. All rights reserved.</p>
+   </footer>
+</body>
+</html>
+

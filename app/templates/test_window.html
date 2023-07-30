@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+</head>
+<body>
+  <button id="capture-button">Capture Image</button>
+
+  <canvas id="canvas"></canvas>
+  <img id="captured-image" src="https://drive.google.com/uc?export=view&id=1GWIjAE0uYBfk3FUDmAolF_tqJOTtRN6D" alt="Captured Image">
+
+  <script>
+    // Function to capture a specific part of the web page
+    function capturePartOfWebPage(x, y, width, height) {
+      html2canvas(document.documentElement).then(function(canvas) {
+        const context = canvas.getContext('2d');
+        const capturedImage = document.getElementById('captured-image');
+        const message = document.getElementById('message');
+
+        // Create a new canvas for the cropped image
+        const croppedCanvas = document.createElement('canvas');
+        const croppedContext = croppedCanvas.getContext('2d');
+        croppedCanvas.width = width;
+        croppedCanvas.height = height;
+
+        // Crop the captured canvas to the specified area
+        croppedContext.drawImage(canvas, x, y, width, height, 0, 0, width, height);
+
+        // Set the captured image source
+        capturedImage.src = croppedCanvas.toDataURL();
+
+        // Display the captured image
+        capturedImage.style.display = 'block';
+
+        // Show success message
+        message.textContent = 'Image capture successful!';
+      }).catch(function(error) {
+        // Show error message
+        const message = document.getElementById('message');
+        message.textContent = 'Image capture failed.';
+        console.error(error);
+      });
+    }
+
+    // Attach event listener to button click
+    document.getElementById('capture-button').addEventListener('click', function() {
+      // Specify the coordinates and dimensions of the desired area
+      const x = 100; // Adjust as needed
+      const y = 100; // Adjust as needed
+      const width = 300; // Adjust as needed
+      const height = 200; // Adjust as needed
+
+      capturePartOfWebPage(x, y, width, height);
+    });
+  </script>
+</body>
+</html>

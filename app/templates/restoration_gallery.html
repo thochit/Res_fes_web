@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ceramic Restoration Session</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+</head>
+<body>
+    <h1>Ceramic Restoration</h1>
+    <p>Welcome to our ceramic restoration session using deep learning. We utilize advanced algorithms to restore damaged ceramics to their original glory.</p>
+    
+    <h2>Restoring Image</h2>
+    <div class="image-index">
+        <div id="window"></div>
+        <img id="restoredImage" src="https://drive.google.com/uc?export=view&id={{ file_id }}" alt="Restored Image">
+    </div>
+    
+    <div class="button-container">
+        <button id="seeBeforeBtn" class="button" onclick="showBeforeImage()">See Original</button>
+        <button id="seeAfterBtn" class="button" onclick="showAfterImage()">See After</button>
+        <button id="increaseButton" class="button" onclick="increaseSize()">Increase Window Size</button>
+        <button id="decreaseButton" class="button" onclick="decreaseSize()">Decrease Window Size</button>
+        <button id="captureButton" class="button" onclick="capture()">Capture Image</button>
+    </div>
+
+    <h2>Next Steps</h2>
+    <p>Thank you for using our ceramic restoration service. If you have any further inquiries or would like to schedule another restoration session, please feel free to contact us:</p>
+    
+    <ul>
+        <li>Email: yesure2023@gmail.com</li>
+    </ul>
+
+    <a href="{{ url_for('gallery') }}" class="button">Back to Gallery</a>
+    <a href="{{ url_for('home') }}" class="button">Back to Home</a>
+
+    <script>
+        function showBeforeImage() {
+            var restoredImage = document.getElementById("restoredImage");
+            var seeBeforeBtn = document.getElementById("seeBeforeBtn");
+            var seeAfterBtn = document.getElementById("seeAfterBtn");
+            
+            restoredImage.src = "https://drive.google.com/uc?export=view&id={{ file_id }}";
+            restoredImage.alt = "Before Image";
+            seeBeforeBtn.disabled = true;
+            seeAfterBtn.disabled = false;
+        }
+        
+        function showAfterImage() {
+            var restoredImage = document.getElementById("restoredImage");
+            var seeBeforeBtn = document.getElementById("seeBeforeBtn");
+            var seeAfterBtn = document.getElementById("seeAfterBtn");
+            
+            restoredImage.src = "{{ url_for('static', filename='images/after.jpg') }}";
+            restoredImage.alt = "After Image";
+            seeBeforeBtn.disabled = false;
+            seeAfterBtn.disabled = true;
+        }
+
+        window.addEventListener('DOMContentLoaded', function () {
+            var windowElement = document.getElementById('window');
+
+            var isDragging = false;
+            var offset = { x: 0, y: 0 };
+
+            windowElement.addEventListener('mousedown', function (event) {
+                isDragging = true;
+                offset.x = event.clientX - windowElement.offsetLeft;
+                offset.y = event.clientY - windowElement.offsetTop;
+            });
+
+            window.addEventListener('mouseup', function () {
+                isDragging = false;
+            });
+
+            window.addEventListener('mousemove', function (event) {
+                if (isDragging) {
+                    var x = event.clientX - offset.x;
+                    var y = event.clientY - offset.y;
+
+                    // Restrict the window within the image bounds
+                    var image = document.getElementById('restoredImage');
+                    var maxX = image.offsetLeft + image.offsetWidth - windowElement.offsetWidth;
+                    var maxY = image.offsetTop + image.offsetHeight - windowElement.offsetHeight;
+
+                    x = Math.max(image.offsetLeft, Math.min(x, maxX));
+                    y = Math.max(image.offsetTop, Math.min(y, maxY));
+
+                    windowElement.style.left = x + 'px';
+                    windowElement.style.top = y + 'px';
+                }
+            });
+        });
+
+        function increaseSize() {
+            var windowElement = document.getElementById('window');
+            var currentWidth = windowElement.offsetWidth;
+            var currentHeight = windowElement.offsetHeight;
+
+            // Increase size by 10 pixels
+            var newWidth = currentWidth + 10;
+            var newHeight = currentHeight + 10;
+
+            windowElement.style.width = newWidth + 'px';
+            windowElement.style.height = newHeight + 'px';
+        }
+
+        function decreaseSize() {
+            var windowElement = document.getElementById('window');
+            var currentWidth = windowElement.offsetWidth;
+            var currentHeight = windowElement.offsetHeight;
+
+            // Decrease size by 10 pixels
+            var newWidth = currentWidth - 10;
+            var newHeight = currentHeight - 10;
+
+            // Ensure the size does not go below 0
+           newWidth = Math.max(newWidth, 0);
+            newHeight = Math.max(newHeight, 0);
+
+            windowElement.style.width = newWidth + 'px';
+            windowElement.style.height = newHeight + 'px';
+        }
+
+        function capture() {
+            var windowElement = document.getElementById('window');
+            var imageElement = document.getElementById('restoredImage');
+
+            // Capture the part of the web that includes the image
+            var canvas = html2canvas(windowElement, {
+                onrendered: function (canvas) {
+                // Save the captured image as a PNG file
+                var dataURL = canvas.toDataURL('image/png');
+                var filename = 'captured-image.png';
+                var blob = new Blob([dataURL], { type: 'image/png' });  
+                var url = window.URL.createObjectURL(blob);
+
+                // Display the captured image in an image element
+                var imageElement = document.getElementById('capturedImage');
+                imageElement.src = url;
+                }
+            });
+        }
+
+    </script>
+</body>
+</html>

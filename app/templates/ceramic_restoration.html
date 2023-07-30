@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ceramic Restoration Session</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- <script src="{{ url_for('static', filename='script.js') }}"></script> -->
+</head>
+<body>
+    <h1>Ceramic Restoration</h1>
+    <p>Welcome to our ceramic restoration session using deep learning. We utilize advanced algorithms to restore damaged ceramics to their original glory.</p>
+
+    <div class="container">
+        <form action="/" method="POST" enctype="multipart/form-data">
+            <input type="file" name="image" accept="image/*" required>
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+
+    <h2>About Deep Learning Restoration</h2>
+    <p>Our deep learning restoration technique employs state-of-the-art neural networks to analyze and reconstruct damaged ceramic artifacts. By leveraging the power of machine learning, we can restore intricate details and patterns with precision and accuracy.</p>
+
+    <h2>Contact Us</h2>
+    <p>If you have any inquiries or would like to schedule a ceramic restoration session, please feel free to contact us:</p>
+    <ul>
+        <li>Email: yesure2023@gmail.com</li>
+    </ul>
+    <a href="{{ url_for('home') }}" class="button">Back to Home</a>
+
+    <script>
+        function changeImage() {
+            var image = document.getElementById("myImage");
+            var button = document.getElementById("changeBtn");
+            var currentSrc = image.getAttribute("src");
+            var currentAlt = image.getAttribute("alt");
+
+            if (currentSrc.includes("before.jpg")) {
+                image.setAttribute("src", "{{ url_for('static', filename='images/after.jpg') }}");
+                image.setAttribute("alt", "After");
+                button.textContent = "See Before";
+            } else {
+                image.setAttribute("src", "{{ url_for('static', filename='images/before.jpg') }}");
+                image.setAttribute("alt", "Before");
+                button.textContent = "See After";
+            }
+        }
+
+        function loadImage(event) {
+            var image = document.getElementById("myImage");
+            image.src = URL.createObjectURL(event.target.files[0]);
+            image.alt = "Custom Image";
+        }
+    </script>
+</body>
+</html>
